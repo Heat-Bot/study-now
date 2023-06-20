@@ -1,6 +1,6 @@
 ## Study Now by Heat, Inc.
 
-[![Made with C#](https://img.shields.io/badge/Made%20with-C%23-blue.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/
+[![Made with C#](https://img.shields.io/badge/Made%20with-C%23-blue.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 
 Study Now is an innovative and interactive Windows Forms application developed by Heat, Inc. It is designed to enhance your study habits and maximize productivity. With Study Now, you can create a focused and disciplined learning environment, ensuring that you make the most of your study sessions.
 
