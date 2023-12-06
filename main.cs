@@ -1,49 +1,63 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Timers;
 
-public class MainForm : Form
+namespace StudyNow
 {
-    [DllImport("user32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool LockWorkStation();
-
-    private Timer studyTimer = new Timer();
-
-    public MainForm()
+    public partial class MainForm : Form
     {
-        InitializeComponent();
+        private System.Timers.Timer timer;
+        private bool active = false;
+        private bool paused = false;
+        private bool subjectSelected = false;
+        private int activeMinutes = 0;
 
-        studyTimer.Interval = 600000;
-        studyTimer.Tick += StudyTimer_Tick;
+        public MainForm()
+        {
+            InitializeComponent();
 
-        studyTimer.Start();
+            timer = new System.Timers.Timer();
+            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            timer.Interval = 1000;  
+            timer.Enabled = true;
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            if (active && !paused)
+            {
+                activeMinutes++;
+
+                if (activeMinutes >= 50)
+                {
+                    timer.Stop();
+                    paused = true;
+                    active = false;
+                    SelectSubjectDialog();
+                }
+            }
+        }
+
+        private void SelectSubjectDialog()
+        {
+            if (subjectSelected)
+            {
+                ResumeStudying();
+            }
+        }
+
+        private void ResumeStudying()
+        {
+            subjectSelected = false;
+            activeMinutes = 0;
+            timer.Start();
+            paused = false;
+            active = true;
+        }
+
+        private void FinishedStudyingButton_Click(object sender, EventArgs e)
+        {
+            ResumeStudying();
+        }
     }
-
-    private void StudyTimer_Tick(object sender, EventArgs e)
-    {
-        LockComputer();
-        PromptSubjectSelection();
-    }
-
-    private void LockComputer()
-    {
-        LockWorkStation();
-    }
-
-    private void PromptSubjectSelection()
-    {
-
-    }
-
-    private void FinishedStudyingButton_Click(object sender, EventArgs e)
-    {
-        studyTimer.Stop();
-        GenerateQuestions();
-    }
-
-    private void GenerateQuestions()
-    {
-    }
-
 }
